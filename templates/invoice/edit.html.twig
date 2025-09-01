@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier la facture{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <h1 class="mb-4 text-center">Modifier la facture</h1>
+
+    {{ form_start(form) }}
+        {{ form_row(form.number) }}
+        {{ form_row(form.description) }}
+        {{ form_row(form.amount) }}
+        {{ form_row(form.status) }}
+        {{ form_row(form.createdAt) }}
+
+        <button class="btn btn-warning mt-3">Mettre à jour</button>
+        <a href="{{ path('app_invoice_index') }}" class="btn btn-secondary mt-3">Annuler</a>
+    {{ form_end(form) }}
+</div>
+{% endblock %}

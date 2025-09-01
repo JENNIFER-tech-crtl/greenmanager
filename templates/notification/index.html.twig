@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Notifications{% endblock %}
+
+{% block body %}
+<h1>Mes notifications</h1>
+
+<ul>
+    {% for notification in notifications %}
+        <li style="margin-bottom: 10px; {% if not notification.isRead %}font-weight: bold;{% endif %}">
+            {{ notification.title }} - {{ notification.message }}
+            <small>({{ notification.createdAt|date('d/m/Y H:i') }})</small>
+            {% if not notification.isRead %}
+                <a href="{{ path('app_notification_read', {'id': notification.id}) }}">Marquer comme lue</a>
+            {% endif %}
+        </li>
+    {% else %}
+        <li>Aucune notification.</li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

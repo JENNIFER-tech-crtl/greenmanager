@@ -1,0 +1,116 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tableau de bord{% endblock %}
+
+{% block body %}
+<style>
+    body {
+        background: #f0f2f5;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .profile-card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 30px 20px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .profile-card img {
+        border-radius: 50%;
+        border: 3px solid #28a745;
+    }
+
+    .profile-card h3 {
+        margin-top: 15px;
+        font-weight: 600;
+    }
+
+    .profile-card p {
+        color: #555;
+    }
+
+    .tasks-card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        margin-bottom: 20px;
+    }
+
+    .tasks-card h5 {
+        font-weight: 600;
+        margin-bottom: 15px;
+    }
+
+    .task-item {
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+    }
+
+    .task-item:last-child {
+        border-bottom: none;
+    }
+
+    .task-status {
+        font-weight: 600;
+        font-size: 0.9rem;
+        padding: 2px 8px;
+        border-radius: 8px;
+        color: #fff;
+    }
+
+    .status-todo { background-color: #ffc107; }
+    .status-doing { background-color: #17a2b8; }
+    .status-done { background-color: #28a745; }
+</style>
+
+<div class="container mt-5">
+    {% if user %}
+        <div class="profile-card">
+                    {% if app.user.avatar %}
+                        <img src="{{ asset('uploads/avatars/' ~ app.user.avatar) }}" class="rounded-circle mb-3" width="120" height="120" alt="Avatar">
+                    {% else %}
+                        <img src="{{ asset('images/default-avatar.png') }}" class="rounded-circle mb-3" width="120" height="120" alt="Avatar par défaut">
+                    {% endif %}
+
+            <h3>{{ user.fullName }}</h3>
+            <p>{{ user.email }}</p>
+            <a href="{{ path('app_profile_edit', {'id': user.id}) }}" class="btn btn-success btn-sm mt-2">Éditer mon profil</a>
+        </div>
+    {% else %}
+        <div class="alert alert-warning text-center">
+            Vous devez être connecté pour voir votre profil.
+        </div>
+    {% endif %}{% for notification in app.user.notifications %}
+    <li>{{ notification.message }}</li>
+{% endfor %}
+
+
+    <div class="row">
+        {% for task in tasks %}
+            <div class="col-md-6">
+                <div class="tasks-card">
+                    <h5>{{ task.title }}</h5>
+                    <p>{{ task.description ?: 'Pas de description' }}</p>
+                    <span class="task-status 
+                        {% if task.status == 'todo' %}status-todo{% endif %}
+                        {% if task.status == 'doing' %}status-doing{% endif %}
+                        {% if task.status == 'done' %}status-done{% endif %}
+                    ">
+                        {{ task.status|capitalize }}
+                    </span>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-12">
+                <div class="alert alert-info text-center">
+                    Vous n'avez encore aucune tâche assignée.
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

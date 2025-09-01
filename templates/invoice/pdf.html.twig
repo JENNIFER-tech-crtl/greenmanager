@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Facture #{{ invoice.id }}</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            color: #333; 
+            margin: 0; 
+            padding: 0; 
+            background: #f8f8f8;
+        }
+        .container { 
+            width: 80%; 
+            margin: 30px auto; 
+            background: #fff; 
+            padding: 20px; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .company-info {
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #555;
+        }
+        .company-info h2 {
+            margin: 0;
+            font-size: 20px;
+            color: #28a745;
+        }
+        .header { 
+            text-align: center; 
+            margin-bottom: 30px; 
+            border-bottom: 2px solid #28a745;
+            padding-bottom: 10px;
+        }
+        .header h1 { 
+            margin: 0; 
+            font-size: 28px; 
+            color: #28a745;
+        }
+        .details {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .details th, .details td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        .details th {
+            background: #f0f0f0;
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 14px;
+            text-align: center;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- Informations de l'entreprise -->
+        <div class="company-info">
+            <h2>GreenManager</h2>
+            <p>Adresse : Rue X, Quartier GBEGAMEY CENTRE, Cotonou</p>
+            <p>Email : contact@greenmanager.com</p>
+            <p>Téléphone : +229 01 97988520</p>
+        </div>
+
+        <!-- Titre facture -->
+        <div class="header">
+            <h1>Facture #{{ invoice.id }}</h1>
+        </div>
+
+        <!-- Détails facture -->
+        <table class="details">
+            <tr>
+                <th>Client</th>
+                <td>{{ invoice.client ?: '—' }}</td>
+            </tr>
+            <tr>
+                <th>Montant</th>
+                <td>{{ invoice.amount }} USD</td>
+            </tr>
+            <tr>
+                <th>Statut</th>
+                <td>{{ invoice.status }}</td>
+            </tr>
+            <tr>
+                <th>Assigné à</th>
+                <td>{{ invoice.assignedTo ? invoice.assignedTo.fullName : '—' }}</td>
+            </tr>
+        </table>
+
+        <!-- Pied de page -->
+        <div class="footer">
+            <p>Merci pour votre confiance.<br>
+            GreenManager © {{ "now"|date("Y") }}</p>
+        </div>
+    </div>
+</body>
+</html>

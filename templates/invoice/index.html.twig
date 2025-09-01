@@ -1,0 +1,106 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Factures{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h2>📄 Factures</h2>
+
+    {# ---------------- Factures Internes (Assignées aux utilisateurs) ---------------- #}
+    <div class="mb-3">
+        <h3>Factures Internes</h3>
+        <a href="{{ path('app_invoice_new') }}" class="btn btn-primary">➕ Ajouter une Facture</a>
+    </div>
+
+    {% set internalInvoices = invoices|filter(i => i.assignedTo is not null) %}
+
+    <table class="table table-striped table-hover mb-5">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Montant</th>
+                <th>Statut</th>
+                <th>Assigné à</th>
+                <th>Créée le</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for inv in internalInvoices %}
+            <tr>
+                <td>{{ inv.id }}</td>
+                <td>{{ inv.amount }} USD</td>
+                <td>
+                    {% if inv.status == 'paid' %}
+                        <span class="badge bg-success">Payée</span>
+                    {% elseif inv.status == 'pending' %}
+                        <span class="badge bg-warning">En attente</span>
+                    {% else %}
+                        <span class="badge bg-danger">Annulée</span>
+                    {% endif %}
+                </td>
+                <td>{{ inv.assignedTo.fullName ?: '—' }}</td>
+                <td>{{ inv.createdAt|date('d/m/Y H:i') }}</td>
+                <td>
+                    <a href="{{ path('app_invoice_edit', {'id': inv.id}) }}" class="btn btn-sm btn-warning">✏️ Éditer</a>
+
+        
+        <a href="{{ path('app_invoice_export_pdf', {'id': inv.id}) }}" class="btn btn-sm btn-danger">📄 PDF</a>
+    </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="6" class="text-center">Aucune facture interne trouvée</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {# ---------------- Factures Clients ---------------- #}
+    <div class="mb-3">
+        <h3>Factures Clients</h3>
+
+    {% set clientInvoices = invoices|filter(i => i.assignedTo is null) %}
+
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Client</th>
+                <th>Montant</th>
+                <th>Statut</th>
+                <th>Créée le</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for inv in clientInvoices %}
+            <tr>
+                <td>{{ inv.id }}</td>
+                <td>{{ inv.client ?: '—' }}</td>
+                <td>{{ inv.amount }} USD</td>
+                <td>
+                    {% if inv.status == 'paid' %}
+                        <span class="badge bg-success">Payée</span>
+                    {% elseif inv.status == 'pending' %}
+                        <span class="badge bg-warning">En attente</span>
+                    {% else %}
+                        <span class="badge bg-danger">Annulée</span>
+                    {% endif %}
+                </td>
+                <td>{{ inv.createdAt|date('d/m/Y H:i') }}</td>
+                <td>
+
+        <a href="{{ path('app_invoice_edit', {'id': inv.id}) }}" class="btn btn-sm btn-warning">✏️ Éditer</a>
+        <a href="{{ path('app_invoice_export_pdf', {'id': inv.id}) }}" class="btn btn-sm btn-danger">📄 PDF</a>
+    </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="6" class="text-center">Aucune facture client trouvée</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

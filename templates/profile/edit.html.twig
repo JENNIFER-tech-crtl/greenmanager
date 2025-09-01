@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Éditer mon profil{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white text-center">
+                    <h3 class="mb-0">✏️ Modifier mon profil</h3>
+                </div>
+                <div class="card-body">
+                    {{ form_start(form, {'attr': {'enctype':'multipart/form-data'}}) }}
+
+                    {% for field in form %}
+                        {% if field.vars.name != 'submit' %}
+                            <div class="mb-3">
+                                {{ form_label(field, null, {'label_attr': {'class': 'form-label'}}) }}
+                                {{ form_widget(field, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(field) }}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+
+                    <div class="d-grid">
+                        <button class="btn btn-success">💾 Enregistrer</button>
+                    </div>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

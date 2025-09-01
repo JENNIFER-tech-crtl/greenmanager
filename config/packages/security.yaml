@@ -1,0 +1,45 @@
+# config/packages/security.yaml
+security:
+    password_hashers:
+        App\Entity\User:
+            algorithm: auto
+
+    providers:
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: email
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        main:
+            lazy: true
+            provider: app_user_provider
+
+            # Formulaire de connexion
+            form_login:
+                login_path: app_login          # correspond à #[Route('/login', name: 'app_login')]
+                check_path: app_login          # Symfony l'utilise pour valider le formulaire
+                username_parameter: email      # champ "email" dans ton formulaire
+                password_parameter: password   # champ "password" dans ton formulaire
+                default_target_path: redirect_after_login  # route pour rediriger après login
+
+            logout:
+                path: app_logout               # #[Route('/logout', name: 'app_logout')]
+                target: app_login              # où rediriger après déconnexion
+
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 604800 # 7 jours
+                path: /
+
+    access_control:
+        # Seules les personnes connectées peuvent accéder au dashboard
+        - { path: ^/dashboard, roles: ROLE_USER }
+        # Seuls les admins peuvent accéder à la gestion des employés, tâches et factures
+        - { path: ^/employee, roles: ROLE_ADMIN }
+        - { path: ^/task, roles: ROLE_ADMIN }
+        - { path: ^/invoice, roles: ROLE_ADMIN }

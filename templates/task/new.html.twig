@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle Tâche{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white text-center">
+                    <h3 class="mb-0">➕ Créer une nouvelle tâche</h3>
+                </div>
+                <div class="card-body">
+                    {{ include('task/_form.html.twig', {'button_label': 'Créer'}) }}
+
+                    <div class="mt-3">
+                        <a href="{{ path('app_task_index') }}" class="btn btn-secondary">⬅ Retour à la liste</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Tâches{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>📋 Liste des tâches</h2>
+        <a href="{{ path('app_task_new') }}" class="btn btn-success">➕ Nouvelle tâche</a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>Id</th>
+                    <th>Titre</th>
+                    <th>Description</th>
+                    <th>Début</th>
+                    <th>Fin</th>
+                    <th>Statut</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for task in tasks %}
+                    <tr>
+                        <td>{{ task.id }}</td>
+                        <td>{{ task.title }}</td>
+                        <td>{{ task.description }}</td>
+                        <td>{{ task.startAt ? task.startAt|date('Y-m-d H:i') : '-' }}</td>
+                        <td>{{ task.endAt ? task.endAt|date('Y-m-d H:i') : '-' }}</td>
+                        <td>
+                            {% if task.status %}
+                                <span class="badge bg-info">{{ task.status }}</span>
+                            {% else %}
+                                <span class="text-muted">En attente</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{{ path('app_task_show', {'id': task.id}) }}" class="btn btn-sm btn-primary">Voir</a>
+                            <a href="{{ path('app_task_edit', {'id': task.id}) }}" class="btn btn-sm btn-warning">Modifier</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="7" class="text-center">Aucune tâche trouvée</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,13 @@
+<h2>Mes notifications</h2>
+<ul>
+    {% for notif in notifications %}
+        <li>
+            {{ notif.message }} <small>({{ notif.createdAt|date('d/m/Y H:i') }})</small>
+            {% if not notif.isRead %}
+                <a href="{{ path('app_notification_read', {id: notif.id}) }}">Marquer comme lue</a>
+            {% endif %}
+        </li>
+    {% else %}
+        <li>Aucune notification</li>
+    {% endfor %}
+</ul>

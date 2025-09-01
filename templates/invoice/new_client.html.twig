@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle Facture Client{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-success text-white">
+            <h3 class="mb-0">💰 Créer une nouvelle facture (Client)</h3>
+        </div>
+        <div class="card-body">
+            {{ form_start(form, {'attr': {'class': 'row g-3'}}) }}
+
+            <div class="col-md-6">
+                {{ form_label(form.client) }}
+                {{ form_widget(form.client, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.client) }}
+            </div>
+
+            <div class="col-md-6">
+                {{ form_label(form.clientEmail) }}
+                {{ form_widget(form.clientEmail, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.clientEmail) }}
+            </div>
+
+            <div class="col-md-6">
+                {{ form_label(form.amount) }}
+                {{ form_widget(form.amount, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.amount) }}
+            </div>
+
+            <div class="col-md-6">
+                {{ form_label(form.status) }}
+                {{ form_widget(form.status, {'attr': {'class': 'form-select'}}) }}
+                {{ form_errors(form.status) }}
+            </div>
+
+            <div class="col-12 mt-3">
+                <button type="submit" class="btn btn-success btn-lg">💾 Envoyer au client</button>
+                <a href="{{ path('app_invoice_index') }}" class="btn btn-secondary btn-lg ms-2">⬅ Retour</a>
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+{% endblock %}
