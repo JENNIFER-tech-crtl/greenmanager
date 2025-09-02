@@ -1,13 +1,16 @@
-# Utilise PHP 8.2 avec Apache
+# Utilise PHP 8.2 avec Apache et PostgreSQL client déjà installé
 FROM php:8.2-apache
 
-# Installe les extensions PHP nécessaires
-RUN docker-php-ext-install pdo pdo_pgsql
+# Installer les dépendances nécessaires pour pdo_pgsql
+RUN apt-get update && apt-get install -y \
+    libpq-dev \
+    && docker-php-ext-install pdo pdo_pgsql \
+    && rm -rf /var/lib/apt/lists/*
 
-# Copie tous les fichiers du projet
+# Copier tous les fichiers du projet
 COPY . /var/www/html
 
-# Définit le dossier public comme racine
+# Définir le dossier public comme racine
 WORKDIR /var/www/html/public
 
 # Expose le port 10000 pour Render
